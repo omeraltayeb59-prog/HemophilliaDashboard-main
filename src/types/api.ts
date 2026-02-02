@@ -56,12 +56,15 @@ export interface Patient {
   vitalStatus?: 'Alive' | 'Died' | 'Unknown';
   hemophiliaCenterId?: string;
   diagnosis?: string;
+  diagnosisType?: string;
+  diagnosisYear?: number;
   incidenceDate?: string;
   severity?: 'mild' | 'moderate' | 'severe' | 'unknown';
   factorPercent?: number;
   factorPercentDate?: string;
   familyHistory?: 'first_degree' | 'second_degree' | 'third_degree' | 'none';
   HasInhibitors?: boolean;
+  hasInhibitors?: boolean;
   inhibitorLevel?: number;
   inhibitorScreeningDate?: string;
   inhibitors?: InhibitorEntry[];
@@ -72,6 +75,13 @@ export interface Patient {
   longTermMedication?: boolean;
   testDates?: PatientTestDate[];
   otherMedicalTests?: OtherMedicalTest[];
+  name?: string;
+  age?: number;
+  category?: string;
+  factorLevelTestDate?: string;
+  viralScreeningDate?: string;
+  otherTestDate?: string;
+  inhibitor?: boolean;
 }
 
 export type TestType = 'FactorLevel' | 'InhibitorScreening' | 'HBV' | 'HCV' | 'HIV' | 'Other';
@@ -88,27 +98,35 @@ export interface PatientRequest {
   nationalIdNumber: string;
   dateOfBirth: string;
   gender: string;
-  homeState: string;
-  homeCityOrTown: string;
-  homeLocality: string;
-  residenceType: 'InsideSudan' | 'OutsideSudan';
-  country?: string;
-  cityOrTown?: string;
-  locality?: string;
-  state?: string;
+  contactNumber1: string;
+  bloodGroup?: string;
   maritalStatus?: string;
   occupation?: string;
-  contactNumber?: string;
-  contactNumber1: string;
   contactNumber2?: string;
-  vitalStatus?: 'Alive' | 'Died' | 'Unknown';
-  hemophiliaCenterId: string;
-  diagnosis: string;
-  incidenceDate?: string;
-  severity?: 'mild' | 'moderate' | 'severe' | 'unknown' | '';
+  contactRelation?: string;
+  hemophiliaCenterId?: string;
+  diagnosis?: string;
+  diagnosisType?: string;
+  diagnosisYear?: number;
+  severity?: string;
   factorPercent?: number;
   factorPercentDate?: string;
-  familyHistory?: 'first_degree' | 'second_degree' | 'third_degree' | 'none' | '';
+  hasInhibitors?: boolean;
+  familyHistory?: string;
+  vitalStatus?: 'Alive' | 'Died' | 'Unknown';
+  homeState?: string;
+  homeCityOrTown?: string;
+  homeLocality?: string;
+  residenceType?: 'InsideSudan' | 'OutsideSudan';
+  residenceState?: string;
+  residenceCityOrTown?: string;
+  residenceLocalArea?: string;
+  residenceRegion?: string;
+  state?: string;
+  cityOrTown?: string;
+  locality?: string;
+  country?: string;
+  incidenceDate?: string;
   HasInhibitors?: boolean;
   inhibitorLevel?: number;
   inhibitorScreeningDate?: string;
@@ -116,7 +134,6 @@ export interface PatientRequest {
   HasChronicDiseases?: boolean;
   chronicDiseases?: string[];
   chronicDiseaseOther?: string;
-  bloodGroup?: string;
   longTermMedication?: boolean;
   testDates?: PatientTestDate[];
   otherMedicalTests?: OtherMedicalTest[];
@@ -128,37 +145,34 @@ export interface InhibitorEntry {
 }
 
 export interface VisitDrug {
-  drugType: string;
-  concentration: number;
+  drugId: number;
   quantity: number;
-  lotNumber?: string;
-  factorId?: number;
 }
 
 export interface PatientVisit {
   id: number;
   patientId: number;
   visitDate: string;
-  centerState?: string;
   centerName?: string;
-  visitType?: 'telephone_consultation' | 'center_visit';
-  serviceType?: 'new_visit' | 'followup' | 'hospital_admission';
+  visitType?: string;
+  diagnosisType?: string;
   complaint?: string;
-  complaintOther?: string;
-  complaintDetails?: string;
   notes?: string;
   enteredBy?: string;
+  createdAt?: string;
+  vitalStatus?: 'Alive' | 'Died' | 'Unknown';
+  managementPlan?: string;
+  drugs?: VisitDrug[];
+  centerState?: string;
+  complaintOther?: string;
+  complaintDetails?: string;
+  serviceType?: 'new_visit' | 'followup' | 'hospital_admission';
   factorLevelTestDates?: string[];
   inhibitorScreeningDates?: string[];
   viralScreeningDates?: string[];
   otherTestDates?: string[];
-  createdAt?: string;
   otherMedicalTests?: OtherMedicalTest[];
-  vitalStatus?: 'Alive' | 'Died' | 'Unknown';
   inhibitors?: InhibitorEntry[];
-  managementPlan?: string;
-  drugs?: VisitDrug[];
-  diagnosisType?: 'new_patient' | 'followup' | 'admission' | 'new_visit' | 'hospital_admission';
 }
 
 export interface OtherMedicalTest {
@@ -167,29 +181,39 @@ export interface OtherMedicalTest {
   testDate: string;
 }
 
+export interface VisitTest {
+  testName: string;
+  result: string;
+  testDate: string;
+}
+
+export interface VisitTestRequest {
+  testName: string;
+  result: string;
+  testDate: string;
+}
+
+export interface VisitDrugRequest {
+  drugId: number;
+  quantity: number;
+}
+
 export interface PatientVisitRequest {
   patientId: number;
+  visitType?: string;
   visitDate: string;
-  centerState?: string;
-  centerName?: string;
-  visitType?: 'telephone_consultation' | 'center_visit';
-  serviceType: 'new_visit' | 'followup' | 'hospital_admission';
-  contactRelation?: string;
+  diagnosis?: string;
+  diagnosisType?: string;
   complaint?: string;
-  complaintOther?: string;
-  complaintDetails?: string;
-  notes?: string;
-  enteredBy?: string;
-  factorLevelTestDates?: string[];
-  inhibitorScreeningDates?: string[];
-  viralScreeningDates?: string[];
-  otherTestDates?: string[];
-  otherMedicalTests?: OtherMedicalTest[];
-  vitalStatus?: 'Alive' | 'Died' | 'Unknown';
-  inhibitors?: InhibitorEntry[];
   managementPlan?: string;
-  drugs?: VisitDrug[];
-  diagnosisType?: 'new_patient' | 'followup' | 'admission';
+  notes?: string;
+  centerName?: string;
+  enteredBy?: string;
+  hasInhibitors?: boolean;
+  inhibitorLevel?: number;
+  vitalStatus?: 'Alive' | 'Died' | 'Unknown';
+  drugs?: VisitDrugRequest[];
+  tests?: VisitTestRequest[];
 }
 
 export interface Treatment {
@@ -235,6 +259,8 @@ export interface LoginRequest {
 export interface RegisterRequest {
   username: string;
   password: string;
+  role?: string;
+  state?: string;
 }
 
 
@@ -251,21 +277,12 @@ export interface CellPhoneTreatment {
 
 export interface CellPhoneTreatmentRequest {
   patientId: number;
-  cellTreatmentCenter: string;
-  treatmentType: string;
-  indicationOfTreatment: string;
-  lot: string;
+  cellTreatmentCenter?: string;
+  treatmentType?: string;
+  indicationOfTreatment?: string;
+  lot?: string;
   noteDate: string;
   quantityLot: number;
-  phoneNumber?: string;
-  callDuration?: number;
-  treatmentGuidance?: string;
-  patientResponse?: string;
-  followUpRequired?: boolean;
-  callStatus?: 'scheduled' | 'in-progress' | 'completed' | 'missed';
-  treatmentInstructions?: string;
-  sideEffectsDiscussed?: string;
-  nextCallDate?: string;
 }
 
 export interface MedicineDistribution {

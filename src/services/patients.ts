@@ -152,74 +152,31 @@ export class PatientsService {
       NationalIdNumber: patient.nationalIdNumber,
       DateOfBirth: patient.dateOfBirth,
       Gender: patient.gender,
-      MaritalStatus: patient.maritalStatus || '',
+      BloodGroup: patient.bloodGroup || null,
+      MaritalStatus: patient.maritalStatus || null,
       Occupation: patient.occupation || null,
       ContactNumber1: patient.contactNumber1,
       ContactNumber2: patient.contactNumber2 || null,
-      VitalStatus: patient.vitalStatus || 'Alive',
-      HemophiliaCenterId: patient.hemophiliaCenterId,
+      ContactRelation: patient.contactRelation || null,
+      HemophiliaCenterId: patient.hemophiliaCenterId || null,
       Diagnosis: patient.diagnosis || null,
-      IncidenceDate: patient.incidenceDate || null,
+      DiagnosisType: patient.diagnosisType || null,
+      DiagnosisYear: patient.diagnosisYear || null,
       Severity: patient.severity || null,
-      FamilyHistory: patient.familyHistory || '',
-      HasInhibitors: patient.HasInhibitors || false,
-      BloodGroup: patient.bloodGroup || '',
-      HasChronicDiseases: patient.HasChronicDiseases || false,
-      ChronicDiseases: Array.isArray(patient.chronicDiseases)
-        ? patient.chronicDiseases
-        : null,
-      ChronicDiseaseOther: patient.chronicDiseaseOther || null,
-      ResidenceLocation: patient.residenceType || 'InsideSudan',
-      HomeState: patient.homeState,
-      HomeCityOrTown: patient.homeCityOrTown,
-      HomeLocality: patient.homeLocality,
-      LongTermMedication: patient.longTermMedication || false,
+      FactorPercent: patient.factorPercent || null,
+      FactorPercentDate: patient.factorPercentDate || null,
+      HasInhibitors: patient.hasInhibitors || false,
+      FamilyHistory: patient.familyHistory || null,
+      VitalStatus: patient.vitalStatus || 'Alive',
+      HomeState: patient.homeState || null,
+      HomeCityOrTown: patient.homeCityOrTown || null,
+      HomeLocality: patient.homeLocality || null,
+      ResidenceType: patient.residenceType || 'InsideSudan',
+      ResidenceState: patient.residenceState || null,
+      ResidenceCityOrTown: patient.residenceCityOrTown || null,
+      ResidenceLocalArea: patient.residenceLocalArea || null,
+      ResidenceRegion: patient.residenceRegion || null,
     };
-
-    if (patient.factorPercent !== undefined && patient.factorPercent !== null && patient.factorPercent !== 0) {
-      transformed.FactorPercent = patient.factorPercent;
-    }
-
-    if (patient.factorPercentDate) {
-      transformed.FactorPercentDate = patient.factorPercentDate;
-    }
-
-    if (patient.HasInhibitors) {
-      if (patient.inhibitorLevel !== undefined && patient.inhibitorLevel !== null && patient.inhibitorLevel !== 0) {
-        transformed.InhibitorLevel = patient.inhibitorLevel;
-      }
-      if (patient.inhibitorScreeningDate) {
-        transformed.InhibitorScreeningDate = patient.inhibitorScreeningDate;
-      }
-    }
-
-    if (patient.inhibitors && patient.inhibitors.length > 0) {
-      transformed.Inhibitors = patient.inhibitors.map(inh => ({
-        InhibitorLevel: inh.inhibitorLevel,
-        InhibitorScreeningDate: inh.inhibitorScreeningDate
-      }));
-    }
-
-    if (patient.residenceType === 'InsideSudan') {
-      transformed.State = patient.state || null;
-      transformed.CityOrTown = patient.cityOrTown || null;
-      transformed.Locality = patient.locality || null;
-      transformed.Country = null;
-    } else if (patient.residenceType === 'OutsideSudan') {
-      transformed.Country = patient.country || null;
-      transformed.State = null;
-      transformed.CityOrTown = null;
-      transformed.Locality = null;
-    }
-
-    if (patient.testDates && patient.testDates.length > 0) {
-      transformed.TestDates = patient.testDates.map(td => ({
-        TestType: this.testTypeToEnum(td.testType),
-        HasTaken: td.hasTaken,
-        TestDate: td.testDate || null,
-        Result: td.result || null
-      }));
-    }
 
     return transformed;
   }
