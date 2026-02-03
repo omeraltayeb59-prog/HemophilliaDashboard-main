@@ -116,27 +116,35 @@ export const PatientForm: React.FC<PatientFormProps> = ({
     nationalIdNumber: '',
     dateOfBirth: '',
     gender: '',
+    contactNumber1: '',
     homeState: '',
     homeCityOrTown: '',
     homeLocality: '',
     residenceType: 'InsideSudan',
+    residenceState: '',
+    residenceCityOrTown: '',
+    residenceLocalArea: '',
+    residenceRegion: '',
     country: '',
     cityOrTown: '',
     locality: '',
     state: '',
     maritalStatus: '',
     occupation: '',
-    contactNumber1: '',
     contactNumber2: '',
+    contactRelation: '',
     vitalStatus: 'Alive',
     hemophiliaCenterId: '',
     diagnosis: '',
+    diagnosisType: '',
+    diagnosisYear: undefined,
     incidenceDate: '',
     severity: '',
     factorPercent: undefined,
     factorPercentDate: undefined,
     familyHistory: '',
     HasInhibitors: false,
+    hasInhibitors: false,
     inhibitorLevel: undefined,
     inhibitorScreeningDate: '',
     inhibitors: [],
@@ -198,27 +206,35 @@ export const PatientForm: React.FC<PatientFormProps> = ({
         nationalIdNumber: patient.nationalIdNumber || '',
         dateOfBirth,
         gender: patient.gender || '',
+        contactNumber1: patient.contactNumber1 || '',
         homeState: patient.homeState || '',
         homeCityOrTown: patient.homeCityOrTown || '',
         homeLocality: patient.homeLocality || '',
         residenceType: patient.residenceType || 'InsideSudan',
+        residenceState: patient.residenceState || '',
+        residenceCityOrTown: patient.residenceCityOrTown || '',
+        residenceLocalArea: patient.residenceLocalArea || '',
+        residenceRegion: patient.residenceRegion || '',
         country: patient.country || '',
         cityOrTown: patient.cityOrTown || '',
         locality: patient.locality || '',
         state: patient.state || '',
         maritalStatus: patient.maritalStatus || '',
         occupation: patient.occupation || '',
-        contactNumber1: patient.contactNumber1 || '',
         contactNumber2: patient.contactNumber2 || '',
+        contactRelation: patient.contactRelation || '',
         vitalStatus: patient.vitalStatus || 'Alive',
         hemophiliaCenterId: patient.hemophiliaCenterId || '',
         diagnosis: patient.diagnosis || '',
+        diagnosisType: patient.diagnosisType || '',
+        diagnosisYear: patient.diagnosisYear,
         incidenceDate,
         severity: patient.severity,
         factorPercent: patient.factorPercent,
         factorPercentDate: factorPercentDate,
         familyHistory: patient.familyHistory,
         HasInhibitors: patient.HasInhibitors === true,
+        hasInhibitors: patient.hasInhibitors === true || patient.HasInhibitors === true,
         inhibitorLevel: patient.inhibitorLevel,
         inhibitorScreeningDate,
         inhibitors: patient.inhibitors || [],
@@ -958,40 +974,86 @@ export const PatientForm: React.FC<PatientFormProps> = ({
               </div>
             )}
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Diagnosis
-              </label>
-              <select
-                name="diagnosis"
-                value={formData.diagnosis}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-              >
-                <option value="">Select Diagnosis</option>
-                <option value="Hemophilia A">Hemophilia A</option>
-                <option value="Hemophilia B">Hemophilia B</option>
-                <option value="Hemophilia A carrier">Hemophilia A carrier</option>
-                <option value="Hemophilia B carrier">Hemophilia B carrier</option>
-                <option value="Acquired hemophilia">Acquired hemophilia</option>
-                <option value="Von Willebrand Disease">Von Willebrand Disease</option>
-                <option value="Afibrinogenemia">Afibrinogenemia</option>
-                <option value="Hypofibrinogenemia">Hypofibrinogenemia</option>
-                <option value="Dysfibrinogenemia">Dysfibrinogenemia</option>
-                <option value="Platelete dysfunction">Platelete dysfunction</option>
-                <option value="Bernard Soulier syndrome">Bernard Soulier syndrome</option>
-                <option value="Glanzmann thrombasthenia">Glanzmann thrombasthenia</option>
-                <option value="Prothrombin deficiency">Prothrombin deficiency</option>
-                <option value="Factor V deficiency">Factor V deficiency</option>
-                <option value="Combined factor V and VIII deficiency">Combined factor V and VIII deficiency</option>
-                <option value="Factor VII deficiency">Factor VII deficiency</option>
-                <option value="Factor X deficiency">Factor X deficiency</option>
-                <option value="Factor XI deficiency">Factor XI deficiency</option>
-                <option value="Factor XII deficiency">Factor XII deficiency</option>
-                <option value="Factor XIII deficiency">Factor XIII deficiency</option>
-                <option value="Vitamin K dependent factor deficiency">Vitamin K dependent factor deficiency</option>
-                <option value="Other bleeding disorder">Other bleeding disorder</option>
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Diagnosis
+                </label>
+                <select
+                  name="diagnosis"
+                  value={formData.diagnosis}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                >
+                  <option value="">Select Diagnosis</option>
+                  <option value="Hemophilia A">Hemophilia A</option>
+                  <option value="Hemophilia B">Hemophilia B</option>
+                  <option value="Hemophilia A carrier">Hemophilia A carrier</option>
+                  <option value="Hemophilia B carrier">Hemophilia B carrier</option>
+                  <option value="Acquired hemophilia">Acquired hemophilia</option>
+                  <option value="Von Willebrand Disease">Von Willebrand Disease</option>
+                  <option value="Afibrinogenemia">Afibrinogenemia</option>
+                  <option value="Hypofibrinogenemia">Hypofibrinogenemia</option>
+                  <option value="Dysfibrinogenemia">Dysfibrinogenemia</option>
+                  <option value="Platelete dysfunction">Platelete dysfunction</option>
+                  <option value="Bernard Soulier syndrome">Bernard Soulier syndrome</option>
+                  <option value="Glanzmann thrombasthenia">Glanzmann thrombasthenia</option>
+                  <option value="Prothrombin deficiency">Prothrombin deficiency</option>
+                  <option value="Factor V deficiency">Factor V deficiency</option>
+                  <option value="Combined factor V and VIII deficiency">Combined factor V and VIII deficiency</option>
+                  <option value="Factor VII deficiency">Factor VII deficiency</option>
+                  <option value="Factor X deficiency">Factor X deficiency</option>
+                  <option value="Factor XI deficiency">Factor XI deficiency</option>
+                  <option value="Factor XII deficiency">Factor XII deficiency</option>
+                  <option value="Factor XIII deficiency">Factor XIII deficiency</option>
+                  <option value="Vitamin K dependent factor deficiency">Vitamin K dependent factor deficiency</option>
+                  <option value="Other bleeding disorder">Other bleeding disorder</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Diagnosis Type
+                </label>
+                <input
+                  type="text"
+                  name="diagnosisType"
+                  value={formData.diagnosisType || ''}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="e.g., new_patient, followup"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Diagnosis Year
+                </label>
+                <input
+                  type="number"
+                  name="diagnosisYear"
+                  value={formData.diagnosisYear || ''}
+                  onChange={handleChange}
+                  min="1900"
+                  max={new Date().getFullYear()}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="Year of diagnosis"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Contact Relation
+                </label>
+                <input
+                  type="text"
+                  name="contactRelation"
+                  value={formData.contactRelation || ''}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="e.g., Father, Mother, Brother"
+                />
+              </div>
             </div>
 
             <div className="mb-4">
