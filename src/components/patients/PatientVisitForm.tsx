@@ -63,6 +63,8 @@ export const PatientVisitForm: React.FC<PatientVisitFormProps> = ({
   const [formData, setFormData] = useState<PatientVisitRequest>({
     patientId: 0,
     visitDate: new Date().toISOString().split('T')[0],
+    diagnosis: '',
+    diagnosisType: '',
     centerState: '',
     centerName: '',
     visitType: undefined,
@@ -99,6 +101,8 @@ export const PatientVisitForm: React.FC<PatientVisitFormProps> = ({
       setFormData({
         patientId: visit.patientId,
         visitDate,
+        diagnosis: visit.diagnosis || '',
+        diagnosisType: visit.diagnosisType || '',
         centerState: visit.centerState || '',
         centerName: visit.centerName || '',
         visitType: visit.visitType,
@@ -110,7 +114,6 @@ export const PatientVisitForm: React.FC<PatientVisitFormProps> = ({
         enteredBy: visit.enteredBy || '',
         vitalStatus: visit.vitalStatus || 'Alive',
         managementPlan: visit.managementPlan || '',
-  
         drugs: visit.drugs || [],
       });
 
@@ -140,9 +143,18 @@ export const PatientVisitForm: React.FC<PatientVisitFormProps> = ({
       notesWithFollowUp = notesWithFollowUp ? `${notesWithFollowUp}${followUpText}` : followUpText.trim();
     }
 
+    const processDrugs = formData.visitType === 'center_visit' && formData.drugs && formData.drugs.length > 0
+      ? formData.drugs.map(drug => ({
+          drugId: drug.factorId || 0,
+          quantity: drug.quantity || 0
+        }))
+      : [];
+
     const submitData: PatientVisitRequest = {
       patientId: formData.patientId,
       visitDate: new Date(formData.visitDate).toISOString(),
+      diagnosis: formData.diagnosis || undefined,
+      diagnosisType: formData.diagnosisType || undefined,
       centerState: formData.centerState,
       centerName: formData.centerName,
       serviceType: formData.serviceType,
@@ -154,8 +166,7 @@ export const PatientVisitForm: React.FC<PatientVisitFormProps> = ({
       enteredBy: formData.enteredBy,
       ...(formData.vitalStatus !== undefined ? { vitalStatus: formData.vitalStatus } : {}),
       managementPlan: formData.managementPlan,
-
-      drugs: formData.visitType === 'center_visit' ? (formData.drugs && formData.drugs.length > 0 ? formData.drugs : undefined) : undefined,
+      drugs: processDrugs.length > 0 ? processDrugs : [],
     };
 
     onSave(submitData);
@@ -328,6 +339,38 @@ export const PatientVisitForm: React.FC<PatientVisitFormProps> = ({
                   onChange={handleChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Diagnosis *
+                </label>
+                <input
+                  type="text"
+                  name="diagnosis"
+                  value={formData.diagnosis || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="e.g., Hemophilia A"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Diagnosis Type *
+                </label>
+                <input
+                  type="text"
+                  name="diagnosisType"
+                  value={formData.diagnosisType || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="e.g., Confirmed"
                 />
               </div>
             </div>
