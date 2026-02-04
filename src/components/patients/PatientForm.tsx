@@ -355,46 +355,52 @@ export const PatientForm: React.FC<PatientFormProps> = ({
         ...(value.result && { result: value.result }),
       }));
 
+    const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+    const familyHistoryMap: Record<string, string> = {
+      'first_degree': 'FirstDegree',
+      'second_degree': 'SecondDegree',
+      'third_degree': 'ThirdDegree'
+    };
+
     const submitData: any = {
-      ...formData,
-      vitalStatus: formData.vitalStatus || 'Alive',
-      dateOfBirth: new Date(formData.dateOfBirth).toISOString(),
-      incidenceDate: formData.incidenceDate ? new Date(formData.incidenceDate).toISOString() : undefined,
+      FullName: formData.fullName,
+      NationalIdNumber: formData.nationalIdNumber,
+      DateOfBirth: formData.dateOfBirth,
+      Gender: capitalizeFirstLetter(formData.gender),
+      MaritalStatus: capitalizeFirstLetter(formData.maritalStatus),
+      Occupation: formData.occupation,
+      ContactNumber1: formData.contactNumber1,
+      ContactNumber2: formData.contactNumber2 || null,
+      ContactRelation: formData.contactRelation || null,
+      VitalStatus: formData.vitalStatus || 'Alive',
+      HemophiliaCenterId: formData.hemophiliaCenterId,
+      Diagnosis: formData.diagnosis || null,
+      DiagnosisType: formData.diagnosisType || null,
+      DiagnosisYear: formData.diagnosisYear || null,
+      Severity: formData.severity ? capitalizeFirstLetter(formData.severity) : null,
+      FamilyHistory: hasFamilyHistory ? (familyHistoryMap[formData.familyHistory] || formData.familyHistory) : null,
+      HasInhibitors: formData.HasInhibitors,
+      BloodGroup: formData.bloodGroup || null,
+      FactorPercent: hasFactorLevel ? formData.factorPercent : null,
+      FactorPercentDate: hasFactorLevel && factorTestDate ? factorTestDate : null,
       HasChronicDiseases: chronicDiseasesArray.length > 0,
-      chronicDiseases: chronicDiseasesArray,
-      testDates: testDatesArray.length > 0 ? testDatesArray : undefined,
-      familyHistory: hasFamilyHistory ? formData.familyHistory : null,
-      otherMedicalTests: otherTests.length > 0 ? otherTests.filter(test => test.testName && test.testResult) : undefined,
-      inhibitors: formData.inhibitors && formData.inhibitors.length > 0 ? formData.inhibitors : undefined,
-    }; 
-
-    if (hasFactorLevel && (formData.factorPercent !== undefined && formData.factorPercent !== null)) {
-      submitData.factorPercent = formData.factorPercent;
-    } else {
-      delete submitData.factorPercent;
-    }
-
-    if (hasFactorLevel && factorTestDate) {
-      submitData.factorPercentDate = new Date(factorTestDate).toISOString();
-    } else {
-      delete submitData.factorPercentDate;
-    }
-
-    if (formData.HasInhibitors) {
-      if (formData.inhibitorLevel !== undefined && formData.inhibitorLevel !== null) {
-        submitData.inhibitorLevel = formData.inhibitorLevel;
-      } else {
-        delete submitData.inhibitorLevel;
-      }
-      if (formData.inhibitorScreeningDate) {
-        submitData.inhibitorScreeningDate = new Date(formData.inhibitorScreeningDate).toISOString();
-      } else {
-        delete submitData.inhibitorScreeningDate;
-      }
-    } else {
-      delete submitData.inhibitorLevel;
-      delete submitData.inhibitorScreeningDate;
-    }
+      ChronicDiseases: chronicDiseasesArray.length > 0 ? chronicDiseasesArray : null,
+      ChronicDiseaseOther: formData.chronicDiseaseOther || null,
+      ResidenceType: formData.residenceType,
+      HomeState: formData.homeState,
+      HomeCityOrTown: formData.homeCityOrTown,
+      HomeLocality: formData.homeLocality,
+      ResidenceState: formData.residenceType === 'InsideSudan' ? formData.state : (formData.residenceState || null),
+      ResidenceCityOrTown: formData.residenceType === 'InsideSudan' ? formData.cityOrTown : (formData.residenceCityOrTown || null),
+      ResidenceLocalArea: formData.residenceType === 'InsideSudan' ? formData.locality : (formData.residenceLocalArea || null),
+      ResidenceRegion: formData.residenceRegion || null,
+      Country: formData.country || null,
+      InhibitorLevel: formData.HasInhibitors ? formData.inhibitorLevel : null,
+      InhibitorScreeningDate: formData.HasInhibitors && formData.inhibitorScreeningDate ? formData.inhibitorScreeningDate : null,
+      Inhibitors: formData.HasInhibitors && formData.inhibitors?.length > 0 ? formData.inhibitors : null,
+      TestDates: testDatesArray.length > 0 ? testDatesArray : null,
+    };
 
     onSave(submitData);
   };
