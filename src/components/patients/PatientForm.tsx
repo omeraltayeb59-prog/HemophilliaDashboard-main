@@ -363,43 +363,53 @@ export const PatientForm: React.FC<PatientFormProps> = ({
       'third_degree': 'ThirdDegree'
     };
 
+    const maritalStatusMap: Record<string, string> = {
+      'single': 'Single',
+      'married': 'Married',
+      'divorced': 'Divorced',
+      'widowed': 'Widowed'
+    };
+
+    const severityMap: Record<string, string> = {
+      'mild': 'Mild',
+      'moderate': 'Moderate',
+      'severe': 'Severe'
+    };
+
+    const chronicDiseaseString = chronicDiseasesArray.length > 0 ? chronicDiseasesArray.join(', ') : '';
+
     const submitData: any = {
       FullName: formData.fullName,
       NationalIdNumber: formData.nationalIdNumber,
       DateOfBirth: formData.dateOfBirth,
       Gender: capitalizeFirstLetter(formData.gender),
-      MaritalStatus: capitalizeFirstLetter(formData.maritalStatus),
+      MaritalStatus: maritalStatusMap[formData.maritalStatus] || capitalizeFirstLetter(formData.maritalStatus),
       Occupation: formData.occupation,
       ContactNumber1: formData.contactNumber1,
       ContactNumber2: formData.contactNumber2 || null,
-      ContactRelation: formData.contactRelation || null,
+      ContactRelation: formData.contactRelation,
       VitalStatus: formData.vitalStatus || 'Alive',
       HemophiliaCenterId: formData.hemophiliaCenterId,
       Diagnosis: formData.diagnosis || null,
-      DiagnosisType: formData.diagnosisType || null,
+      DiagnosisType: formData.diagnosisType,
       DiagnosisYear: formData.diagnosisYear || null,
-      Severity: formData.severity ? capitalizeFirstLetter(formData.severity) : null,
+      Severity: severityMap[formData.severity] || (formData.severity ? capitalizeFirstLetter(formData.severity) : null),
       FamilyHistory: hasFamilyHistory ? (familyHistoryMap[formData.familyHistory] || formData.familyHistory) : null,
       HasInhibitors: formData.HasInhibitors,
       BloodGroup: formData.bloodGroup || null,
       FactorPercent: hasFactorLevel ? formData.factorPercent : null,
       FactorPercentDate: hasFactorLevel && factorTestDate ? factorTestDate : null,
       HasChronicDiseases: chronicDiseasesArray.length > 0,
-      ChronicDiseases: chronicDiseasesArray.length > 0 ? chronicDiseasesArray : null,
+      ChronicDiseases: chronicDiseaseString || null,
       ChronicDiseaseOther: formData.chronicDiseaseOther || null,
       ResidenceType: formData.residenceType,
       HomeState: formData.homeState,
       HomeCityOrTown: formData.homeCityOrTown,
       HomeLocality: formData.homeLocality,
-      ResidenceState: formData.residenceType === 'InsideSudan' ? formData.state : (formData.residenceState || null),
-      ResidenceCityOrTown: formData.residenceType === 'InsideSudan' ? formData.cityOrTown : (formData.residenceCityOrTown || null),
-      ResidenceLocalArea: formData.residenceType === 'InsideSudan' ? formData.locality : (formData.residenceLocalArea || null),
-      ResidenceRegion: formData.residenceRegion || null,
-      Country: formData.country || null,
-      InhibitorLevel: formData.HasInhibitors ? formData.inhibitorLevel : null,
-      InhibitorScreeningDate: formData.HasInhibitors && formData.inhibitorScreeningDate ? formData.inhibitorScreeningDate : null,
-      Inhibitors: formData.HasInhibitors && formData.inhibitors?.length > 0 ? formData.inhibitors : null,
-      TestDates: testDatesArray.length > 0 ? testDatesArray : null,
+      ResidenceState: formData.residenceType === 'InsideSudan' ? formData.state : null,
+      ResidenceCityOrTown: formData.residenceType === 'InsideSudan' ? formData.cityOrTown : null,
+      ResidenceLocalArea: formData.residenceType === 'InsideSudan' ? formData.locality : null,
+      ResidenceRegion: null,
     };
 
     onSave(submitData);
