@@ -148,25 +148,21 @@ export const PatientVisitForm: React.FC<PatientVisitFormProps> = ({
           drugId: drug.factorId || 0,
           quantity: drug.quantity || 0
         }))
-      : [];
+      : undefined;
 
     const submitData: PatientVisitRequest = {
       patientId: formData.patientId,
       visitDate: new Date(formData.visitDate).toISOString(),
       diagnosis: formData.diagnosis || undefined,
       diagnosisType: formData.diagnosisType || undefined,
-      centerState: formData.centerState,
-      centerName: formData.centerName,
-      serviceType: formData.serviceType,
       visitType: formData.visitType,
-      complaint: formData.complaint,
-      complaintOther: formData.complaintOther,
-      complaintDetails: formData.complaintDetails,
-      notes: notesWithFollowUp,
-      enteredBy: formData.enteredBy,
-      ...(formData.vitalStatus !== undefined ? { vitalStatus: formData.vitalStatus } : {}),
-      managementPlan: formData.managementPlan,
-      drugs: processDrugs.length > 0 ? processDrugs : [],
+      complaint: formData.complaint || undefined,
+      centerName: formData.centerName || undefined,
+      notes: notesWithFollowUp || undefined,
+      enteredBy: formData.enteredBy || undefined,
+      vitalStatus: formData.vitalStatus,
+      managementPlan: formData.managementPlan || undefined,
+      drugs: processDrugs,
     };
 
     onSave(submitData);
